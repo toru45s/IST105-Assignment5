@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <title>Interactive Treasure Hunt</title>
+  </head>
+  <body>
+    <h1>Interactive Treasure Hunt</h1>
+    <form method="post">
+      {% csrf_token %} {{ form.as_p }}
+      <button type="submit">Submit</button>
+    </form>
+
+    {% if result %}
+    <h2>Number Puzzle</h2>
+    <p>Input Number is: {{ form.cleaned_data.number }}</p>
+    {% if result.number_result.type == 'even' %}
+    <p>The number is even.</p>
+    <p>Square root: {{ result.number_result.value }}</p>
+    {% else %}
+    <p>The number is odd.</p>
+    <p>Cube: {{ result.number_result.value }}</p>
+    {% endif %}
+
+    <h2>Text Puzzle</h2>
+    <p>Binary representation: {{ result.binary_text }}</p>
+    <p>Number of vowels: {{ result.vowel_count }}</p>
+
+    <h2>Treasure Hunt</h2>
+    <p>Target number: {{ result.treasure_result.target }}</p>
+    <p>Guesses: {{ result.treasure_result.guesses|join:", " }}</p>
+    {% if result.treasure_result.won %}
+    <p>
+      Congrats! You found the treasure in {{ result.treasure_result.tries }}
+      tries.
+    </p>
+    {% else %}
+    <p>Sorry, you didn't find the treasure within 5 tries.</p>
+    {% endif %} {% endif %}
+  </body>
+</html>
